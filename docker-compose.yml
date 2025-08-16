@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  # Used to create a local containerised DB to provide test data for the service.
+  # Doesn't persist using docker volumes, will run ephemerally whilst the docker container is active
+  # Schema/Tables & Data import happens at application runtime and stored on the temporary filesystem
+  postgres:
+    build: ./db
+    container_name: car_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: cars
+    ports:
+      - "5432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
