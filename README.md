@@ -13,10 +13,10 @@ The db/init folder contains the postgreSQL scripts used to create the schema, ta
 
 ## Environment Variables
 
-| Name                 | Description            | Required for            | Example Value |
-| -------------------- | ---------------------- | ----------------------- | ------------- |
-| ${POSTGRES_USER}     | The postgres user name | The PostgreSQL database | admin         |
-| ${POSTGRES_PASSWORD} | The postgres password  | The PostgreSQL database | password      |
+| Name                       | Description                  | Required for            | Example Value |
+| -------------------------- | ---------------------------- | ----------------------- | ------------- |
+| ${POSTGRES_ADMIN_USER}     | The postgres admin user name | The PostgreSQL database | admin         |
+| ${POSTGRES_ADMIN_PASSWORD} | The postgres admin password  | The PostgreSQL database | password      |
 
 ## Building and Running the Services
 
@@ -30,9 +30,9 @@ Run `docker compose up --build` to start the db.
 
 The PostgreSQL service runs within a docker container called `cars_db`. You can access this with the following properties:
 
-| Host      | Port | User             | Password             |
-| --------- | ---- | ---------------- | -------------------- |
-| localhost | 5432 | ${POSTGRES_USER} | ${POSTGRES_PASSWORD} |
+| Host      | Port | User                   | Password                   |
+| --------- | ---- | ---------------------- | -------------------------- |
+| localhost | 5432 | ${POSTGRES_ADMIN_USER} | ${POSTGRES_ADMIN_PASSWORD} |
 
 ## Running Tests
 

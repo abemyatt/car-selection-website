@@ -1,32 +1,33 @@
 -- =====================================================================
--- ** 01-schema.sql **
+-- ** 01-create-schema-and-tables.sql **
 -- Created at: 16/08/2025
 -- 
 -- Creates the appropriate tables within the schema
 -- =====================================================================
+CREATE SCHEMA IF NOT EXISTS car_app;
 
-CREATE TABLE IF NOT EXISTS makes (
+CREATE TABLE IF NOT EXISTS car_app.makes (
     make_id      INT PRIMARY KEY,
     make_name    TEXT NOT NULL,
     created_at   TIMESTAMP,
     updated_at   TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS models (
+CREATE TABLE IF NOT EXISTS car_app.models (
     model_id     INT PRIMARY KEY,
-    make_id      INT NOT NULL REFERENCES makes(make_id),
+    make_id      INT NOT NULL REFERENCES car_app.makes(make_id),
     model_name   TEXT NOT NULL,
     created_at   TIMESTAMP,
     updated_at   TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS model_years (
-    model_id     INT NOT NULL REFERENCES models(model_id),
+CREATE TABLE IF NOT EXISTS car_app.model_years (
+    model_id     INT NOT NULL REFERENCES car_app.models(model_id),
     model_year   INT NOT NULL,
     PRIMARY KEY (model_id, model_year)
 );
 
-CREATE TABLE IF NOT EXISTS submodels (
+CREATE TABLE IF NOT EXISTS car_app.submodels (
     submodel_id   INT PRIMARY KEY,
     model_id      INT NOT NULL,
     model_year    INT NOT NULL,
@@ -34,12 +35,12 @@ CREATE TABLE IF NOT EXISTS submodels (
     created_at    TIMESTAMP,
     updated_at    TIMESTAMP,
     FOREIGN KEY (model_id, model_year)
-        REFERENCES model_years(model_id, model_year)
+        REFERENCES car_app.model_years(model_id, model_year)
 );
 
-CREATE TABLE IF NOT EXISTS trims (
+CREATE TABLE IF NOT EXISTS car_app.trims (
     trim_id           INT PRIMARY KEY,
-    submodel_id       INT NOT NULL REFERENCES submodels(submodel_id),
+    submodel_id       INT NOT NULL REFERENCES car_app.submodels(submodel_id),
     model_id          INT NOT NULL,
     model_year        INT NOT NULL,
     trim_name         TEXT,
@@ -49,12 +50,12 @@ CREATE TABLE IF NOT EXISTS trims (
     created_at        TIMESTAMP,
     updated_at        TIMESTAMP,
     FOREIGN KEY (model_id, model_year)
-        REFERENCES model_years(model_id, model_year)
+        REFERENCES car_app.model_years(model_id, model_year)
 );
 
-CREATE TABLE IF NOT EXISTS bodies (
+CREATE TABLE IF NOT EXISTS car_app.bodies (
     body_id                 INT PRIMARY KEY,
-    trim_id                 INT NOT NULL REFERENCES trims(trim_id),
+    trim_id                 INT NOT NULL REFERENCES car_app.trims(trim_id),
     body_type               TEXT,
     body_doors              INT,
     body_seats              INT,
@@ -75,9 +76,9 @@ CREATE TABLE IF NOT EXISTS bodies (
     updated_at              TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS engines (
+CREATE TABLE IF NOT EXISTS car_app.engines (
     engine_id               INT PRIMARY KEY,
-    trim_id                 INT NOT NULL REFERENCES trims(trim_id),
+    trim_id                 INT NOT NULL REFERENCES car_app.trims(trim_id),
     engine_type             TEXT,
     engine_fuel_type        TEXT,
     engine_cylinders        TEXT,
@@ -95,9 +96,9 @@ CREATE TABLE IF NOT EXISTS engines (
     updated_at              TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS mileages (
+CREATE TABLE IF NOT EXISTS car_app.mileages (
     mileage_id              INT PRIMARY KEY,
-    trim_id                 INT NOT NULL REFERENCES trims(trim_id),
+    trim_id                 INT NOT NULL REFERENCES car_app.trims(trim_id),
     fuel_tank_capacity      NUMERIC,
     combined_mpg            NUMERIC,
     city_mpg                NUMERIC,

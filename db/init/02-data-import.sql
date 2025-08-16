@@ -151,30 +151,30 @@ COPY staging_mileages FROM '/docker-entrypoint-initdb.d/data/mileages-sample.csv
 
 
 -- Import from the temporary tables which contain the full csv data into the normalized tables
-INSERT INTO makes
+INSERT INTO car_app.makes
 SELECT DISTINCT make_id, make_name, make_created::timestamp, make_modified::timestamp
 FROM staging_makes;
 
-INSERT INTO models
+INSERT INTO car_app.models
 SELECT DISTINCT model_id, make_id, model_name, model_created::timestamp, model_modified::timestamp
 FROM staging_models;
 
-INSERT INTO model_years
+INSERT INTO car_app.model_years
 SELECT DISTINCT model_id, model_year
 FROM staging_models;
 
-INSERT INTO submodels
+INSERT INTO car_app.submodels
 SELECT DISTINCT submodel_id, model_id, model_year, submodel_name,
        submodel_created::timestamp, submodel_modified::timestamp
 FROM staging_submodels;
 
-INSERT INTO trims
+INSERT INTO car_app.trims
 SELECT DISTINCT trim_id, submodel_id, model_id, model_year,
        trim_name, trim_description, trim_msrp, trim_invoice,
        trim_created::timestamp, trim_modified::timestamp
 FROM staging_trims;
 
-INSERT INTO bodies
+INSERT INTO car_app.bodies
 SELECT DISTINCT b.body_id, b.trim_id, b.body_type, b.body_doors, b.body_seats,
        b.body_length, b.body_width, b.body_height, b.body_wheel_base,
        b.body_front_track, b.body_rear_track, b.body_ground_clearance,
@@ -182,9 +182,9 @@ SELECT DISTINCT b.body_id, b.trim_id, b.body_type, b.body_doors, b.body_seats,
        b.body_gross_weight, b.body_max_payload, b.body_max_towing_capacity,
        b.body_created::timestamp, b.body_modified::timestamp
 FROM staging_bodies b
-JOIN trims t ON b.trim_id = t.trim_id;
+JOIN car_app.trims t ON b.trim_id = t.trim_id;
 
-INSERT INTO engines
+INSERT INTO car_app.engines
 SELECT DISTINCT e.engine_id, e.trim_id, e.engine_type, e.engine_fuel_type, e.engine_cylinders,
        e.engine_size, e.engine_horsepower_hp, e.engine_horsepower_rpm,
        e.engine_torque_ft_lbs, e.engine_torque_rpm, e.engine_valves,
@@ -192,16 +192,16 @@ SELECT DISTINCT e.engine_id, e.trim_id, e.engine_type, e.engine_fuel_type, e.eng
        e.engine_transmission,
        e.engine_created::timestamp, e.engine_modified::timestamp
 FROM staging_engines e
-JOIN trims t ON e.trim_id = t.trim_id;
+JOIN car_app.trims t ON e.trim_id = t.trim_id;
 
-INSERT INTO mileages
+INSERT INTO car_app.mileages
 SELECT DISTINCT m.mileage_id, m.trim_id, m.fuel_tank_capacity,
        m.combined_mpg, m.city_mpg, m.highway_mpg, m.range_city, m.range_highway,
        m.ev_combined_mpg, m.ev_city_mpg, m.ev_highway_mpg, m.ev_range,
        m.ev_kwh_per_100_mi, m.ev_charge_time_hr_240, m.ev_battery_capacity,
        m.mileage_created::timestamp, m.mileage_modified::timestamp
 FROM staging_mileages m
-JOIN trims t ON m.trim_id = t.trim_id;
+JOIN car_app.trims t ON m.trim_id = t.trim_id;
 
 -- Drop the temporary tables, only used to import from the csv
 DROP TABLE staging_makes, staging_models, staging_submodels,
