@@ -1,9 +1,3 @@
--- =====================================================================
--- ** 01-create-schema-and-tables.sql **
--- Created at: 16/08/2025
--- 
--- Creates the appropriate tables within the schema
--- =====================================================================
 CREATE SCHEMA IF NOT EXISTS car_app;
 
 CREATE TABLE
