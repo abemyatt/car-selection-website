@@ -1,9 +1,12 @@
 package myatt.abe.backend.integration;
 
 
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import myatt.abe.backend.model.dto.MakeDTO;
+import myatt.abe.backend.model.dto.ModelDTO;
 import myatt.abe.backend.model.dto.ResultsDTO;
 import myatt.abe.backend.service.CarService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,9 +15,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -121,6 +121,25 @@ class CarServiceIntegrationTest {
         assertThat(results).anyMatch(car -> car.getMakeName().equals("Audi"));
         assertThat(results).anyMatch(car -> car.getMakeName().equals("BMW"));
         assertThat(results).anyMatch(car -> car.getMakeName().equals("Volkswagen"));
+    }
+
+    @Test
+    void testGetDistinctMakes() {
+        List<MakeDTO> makes = carService.getDistinctMakes();
+
+        assertThat(makes).isNotEmpty();
+        assertThat(makes).anyMatch(make -> make.getMakeName().equals("Audi"));
+        assertThat(makes).anyMatch(make -> make.getMakeName().equals("BMW"));
+        assertThat(makes).anyMatch(make -> make.getMakeName().equals("Volkswagen"));
+    }
+
+    @Test
+    void testGetModelsByMake() {
+        Integer makeId = 1;
+        List<ModelDTO> models = carService.getModelsByMake(makeId);
+
+        assertThat(models).isNotEmpty();
+        assertThat(models).anyMatch(model -> model.getModelName().equals("A4"));
     }
 
 }
