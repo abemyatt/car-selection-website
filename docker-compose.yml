@@ -14,3 +14,15 @@ services:
       - "5432:5432"
     tmpfs:
       - /var/lib/postgresql/data
+  backend:
+    build: ./backend
+    container_name: car_backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cars
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_APP_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_APP_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
