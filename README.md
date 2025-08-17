@@ -17,12 +17,14 @@ The db/init folder contains the postgreSQL scripts used to create the schema, ta
 | -------------------------- | ---------------------------- | ----------------------- | ------------- |
 | ${POSTGRES_ADMIN_USER}     | The postgres admin user name | The PostgreSQL database | admin         |
 | ${POSTGRES_ADMIN_PASSWORD} | The postgres admin password  | The PostgreSQL database | password      |
+| ${POSTGRES_APP_USER}       | The postgres app user name   | The PostgreSQL database | user          |
+| ${POSTGRES_APP_PASSWORD}   | The postgres app password    | The PostgreSQL database | test          |
 
 ## Building and Running the Services
 
 ### via Docker
 
-Run `docker compose up --build` to start the db.
+Run `docker compose up --build` to start the required services. The backend depends on the db to be running.
 
 ## How to use the service
 

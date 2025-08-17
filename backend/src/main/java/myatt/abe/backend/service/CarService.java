@@ -1,48 +1,47 @@
 package myatt.abe.backend.service;
 
-import myatt.abe.backend.mapper.CarMapper;
-import myatt.abe.backend.model.dto.CarDTO;
-import myatt.abe.backend.model.entity.Body;
-import myatt.abe.backend.repository.CarRepository;
-import myatt.abe.backend.repository.spec.CarSpecification;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import myatt.abe.backend.model.dto.ResultsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static myatt.abe.backend.constants.Constants.FILTER_JPQL;
 
 @Service
 public class CarService {
 
     private static final Logger logger = LoggerFactory.getLogger(CarService.class);
 
-    private final CarRepository carRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Autowired
-    public CarService(CarRepository carRepository) {
-        this.carRepository = carRepository;
-    }
+    public List<ResultsDTO> getCars(
+            String make,
+            String model,
+            String bodyType,
+            Integer doors,
+            String fuelType,
+            String transmission) {
 
-    @Transactional(readOnly = true)
-    public List<CarDTO> getCars(String make, String model, String body, Integer doors, String fuelType, String transmission) {
-        logger.info("searching for all cars with make: {}, model: {}, body: {}, doors: {}. fuel type: {}, transmission: {}",
-                make, model, body, doors, fuelType, transmission);
+        logger.info("searching for all cars with make: {}, model: {}, body type: {}, doors: {}. fuel type: {}, transmission: {}",
+                make, model, bodyType, doors, fuelType, transmission);
 
-        Specification<Body> spec = CarSpecification.fetchAllRelations()
-                .and(CarSpecification.hasMake(make)
-                .and(CarSpecification.hasModel(model))
-                .and(CarSpecification.hasBodyType(body))
-                .and(CarSpecification.hasDoors(doors))
-                .and(CarSpecification.hasFuelType(fuelType))
-                .and(CarSpecification.hasTransmission(transmission)));
+        var query = entityManager.createQuery(FILTER_JPQL, ResultsDTO.class);
 
-        List<Body> bodies = carRepository.findAll(spec);
+        query.setParameter("makeName", make);
+        query.setParameter("modelName", model);
+        query.setParameter("bodyType", bodyType);
+        query.setParameter("bodyDoors", doors);
+        query.setParameter("engineFuelType", fuelType);
+        query.setParameter("engineTransmission", transmission);
 
-        logger.info("found {} records", bodies.size());
+        var results = query.getResultList();
+        logger.info("found {} records", results.size());
 
-        return bodies.stream().map(CarMapper::toCarDTO).toList();
+        return results;
     }
 }

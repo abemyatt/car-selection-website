@@ -1,90 +1,47 @@
 package myatt.abe.backend.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "submodels")
 public class Submodel {
 
     @Id
+    @Column(name = "submodel_id")
     private Integer submodelId;
 
-    @ManyToOne
-    @JoinColumn(name = "model_id")
-    private Model model;
-
-    private Integer modelYear;
+    @Column(name = "submodel_name", nullable = false)
     private String submodelName;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "submodel")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "model_id", referencedColumnName = "model_id", nullable = false),
+            @JoinColumn(name = "model_year", referencedColumnName = "model_year", nullable = false)
+    })
+    private ModelYear modelYearReference;
+
+    @OneToMany(mappedBy = "submodel", fetch = FetchType.LAZY)
     private List<Trim> trims;
 
-    public Integer getSubmodelId() {
-        return submodelId;
-    }
-
-    public void setSubmodelId(Integer submodelId) {
-        this.submodelId = submodelId;
-    }
-
-    public Model getModel() {
-        return model;
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
-    }
-
-    public Integer getModelYear() {
-        return modelYear;
-    }
-
-    public void setModelYear(Integer modelYear) {
-        this.modelYear = modelYear;
-    }
-
-    public String getSubmodelName() {
-        return submodelName;
-    }
-
-    public void setSubmodelName(String submodelName) {
-        this.submodelName = submodelName;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public List<Trim> getTrims() {
-        return trims;
-    }
-
-    public void setTrims(List<Trim> trims) {
-        this.trims = trims;
-    }
 }
-

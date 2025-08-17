@@ -1,200 +1,83 @@
 package myatt.abe.backend.model.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "bodies")
 public class Body {
 
     @Id
+    @Column(name = "body_id")
     private Integer bodyId;
 
-    @ManyToOne
-    @JoinColumn(name = "trim_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trim_id", nullable = false)
     private Trim trim;
 
+    @Column(name = "body_type")
     private String bodyType;
+
+    @Column(name = "body_doors")
     private Integer bodyDoors;
+
+    @Column(name = "body_seats")
     private Integer bodySeats;
+
+    @Column(name = "body_length")
     private Double bodyLength;
+
+    @Column(name = "body_width")
     private Double bodyWidth;
+
+    @Column(name = "body_height")
     private Double bodyHeight;
+
+    @Column(name = "body_wheel_base")
     private Double bodyWheelBase;
+
+    @Column(name = "body_front_track")
     private Double bodyFrontTrack;
+
+    @Column(name = "body_rear_track")
     private Double bodyRearTrack;
+
+    @Column(name = "body_ground_clearance")
     private Double bodyGroundClearance;
+
+    @Column(name = "body_cargo_capacity")
     private Double bodyCargoCapacity;
+
+    @Column(name = "body_max_cargo_capacity")
     private Double bodyMaxCargoCapacity;
+
+    @Column(name = "body_curb_weight")
     private Double bodyCurbWeight;
+
+    @Column(name = "body_gross_weight")
     private Double bodyGrossWeight;
+
+    @Column(name = "body_max_payload")
     private Double bodyMaxPayload;
+
+    @Column(name = "body_max_towing_capacity")
     private Double bodyMaxTowingCapacity;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Integer getBodyId() {
-        return bodyId;
-    }
-
-    public void setBodyId(Integer bodyId) {
-        this.bodyId = bodyId;
-    }
-
-    public Trim getTrim() {
-        return trim;
-    }
-
-    public void setTrim(Trim trim) {
-        this.trim = trim;
-    }
-
-    public String getBodyType() {
-        return bodyType;
-    }
-
-    public void setBodyType(String bodyType) {
-        this.bodyType = bodyType;
-    }
-
-    public Integer getBodyDoors() {
-        return bodyDoors;
-    }
-
-    public void setBodyDoors(Integer bodyDoors) {
-        this.bodyDoors = bodyDoors;
-    }
-
-    public Integer getBodySeats() {
-        return bodySeats;
-    }
-
-    public void setBodySeats(Integer bodySeats) {
-        this.bodySeats = bodySeats;
-    }
-
-    public Double getBodyLength() {
-        return bodyLength;
-    }
-
-    public void setBodyLength(Double bodyLength) {
-        this.bodyLength = bodyLength;
-    }
-
-    public Double getBodyWidth() {
-        return bodyWidth;
-    }
-
-    public void setBodyWidth(Double bodyWidth) {
-        this.bodyWidth = bodyWidth;
-    }
-
-    public Double getBodyHeight() {
-        return bodyHeight;
-    }
-
-    public void setBodyHeight(Double bodyHeight) {
-        this.bodyHeight = bodyHeight;
-    }
-
-    public Double getBodyWheelBase() {
-        return bodyWheelBase;
-    }
-
-    public void setBodyWheelBase(Double bodyWheelBase) {
-        this.bodyWheelBase = bodyWheelBase;
-    }
-
-    public Double getBodyFrontTrack() {
-        return bodyFrontTrack;
-    }
-
-    public void setBodyFrontTrack(Double bodyFrontTrack) {
-        this.bodyFrontTrack = bodyFrontTrack;
-    }
-
-    public Double getBodyRearTrack() {
-        return bodyRearTrack;
-    }
-
-    public void setBodyRearTrack(Double bodyRearTrack) {
-        this.bodyRearTrack = bodyRearTrack;
-    }
-
-    public Double getBodyGroundClearance() {
-        return bodyGroundClearance;
-    }
-
-    public void setBodyGroundClearance(Double bodyGroundClearance) {
-        this.bodyGroundClearance = bodyGroundClearance;
-    }
-
-    public Double getBodyCargoCapacity() {
-        return bodyCargoCapacity;
-    }
-
-    public void setBodyCargoCapacity(Double bodyCargoCapacity) {
-        this.bodyCargoCapacity = bodyCargoCapacity;
-    }
-
-    public Double getBodyMaxCargoCapacity() {
-        return bodyMaxCargoCapacity;
-    }
-
-    public void setBodyMaxCargoCapacity(Double bodyMaxCargoCapacity) {
-        this.bodyMaxCargoCapacity = bodyMaxCargoCapacity;
-    }
-
-    public Double getBodyCurbWeight() {
-        return bodyCurbWeight;
-    }
-
-    public void setBodyCurbWeight(Double bodyCurbWeight) {
-        this.bodyCurbWeight = bodyCurbWeight;
-    }
-
-    public Double getBodyGrossWeight() {
-        return bodyGrossWeight;
-    }
-
-    public void setBodyGrossWeight(Double bodyGrossWeight) {
-        this.bodyGrossWeight = bodyGrossWeight;
-    }
-
-    public Double getBodyMaxPayload() {
-        return bodyMaxPayload;
-    }
-
-    public void setBodyMaxPayload(Double bodyMaxPayload) {
-        this.bodyMaxPayload = bodyMaxPayload;
-    }
-
-    public Double getBodyMaxTowingCapacity() {
-        return bodyMaxTowingCapacity;
-    }
-
-    public void setBodyMaxTowingCapacity(Double bodyMaxTowingCapacity) {
-        this.bodyMaxTowingCapacity = bodyMaxTowingCapacity;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

@@ -2,176 +2,73 @@ package myatt.abe.backend.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "mileages")
 public class Mileage {
 
     @Id
+    @Column(name = "mileage_id")
     private Integer mileageId;
 
-    @ManyToOne
-    @JoinColumn(name = "trim_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trim_id", nullable = false)
     private Trim trim;
 
+    @Column(name = "fuel_tank_capacity")
     private Double fuelTankCapacity;
+
+    @Column(name = "combined_mpg")
     private Double combinedMpg;
+
+    @Column(name = "city_mpg")
     private Double cityMpg;
+
+    @Column(name = "highway_mpg")
     private Double highwayMpg;
+
+    @Column(name = "range_city")
     private Integer rangeCity;
+
+    @Column(name = "range_highway")
     private Integer rangeHighway;
+
+    @Column(name = "ev_combined_mpg")
     private Double evCombinedMpg;
+
+    @Column(name = "ev_city_mpg")
     private Double evCityMpg;
+
+    @Column(name = "ev_highway_mpg")
     private Double evHighwayMpg;
+
+    @Column(name = "ev_range")
     private Integer evRange;
+
     @Column(name = "ev_kwh_per_100_mi")
     private Double evKwhPer100Mi;
+
     @Column(name = "ev_charge_time_hr_240")
     private Double evChargeTimeHr240;
+
+    @Column(name = "ev_battery_capacity")
     private Double evBatteryCapacity;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Integer getMileageId() {
-        return mileageId;
-    }
-
-    public void setMileageId(Integer mileageId) {
-        this.mileageId = mileageId;
-    }
-
-    public Trim getTrim() {
-        return trim;
-    }
-
-    public void setTrim(Trim trim) {
-        this.trim = trim;
-    }
-
-    public Double getFuelTankCapacity() {
-        return fuelTankCapacity;
-    }
-
-    public void setFuelTankCapacity(Double fuelTankCapacity) {
-        this.fuelTankCapacity = fuelTankCapacity;
-    }
-
-    public Double getCombinedMpg() {
-        return combinedMpg;
-    }
-
-    public void setCombinedMpg(Double combinedMpg) {
-        this.combinedMpg = combinedMpg;
-    }
-
-    public Double getCityMpg() {
-        return cityMpg;
-    }
-
-    public void setCityMpg(Double cityMpg) {
-        this.cityMpg = cityMpg;
-    }
-
-    public Double getHighwayMpg() {
-        return highwayMpg;
-    }
-
-    public void setHighwayMpg(Double highwayMpg) {
-        this.highwayMpg = highwayMpg;
-    }
-
-    public Integer getRangeCity() {
-        return rangeCity;
-    }
-
-    public void setRangeCity(Integer rangeCity) {
-        this.rangeCity = rangeCity;
-    }
-
-    public Integer getRangeHighway() {
-        return rangeHighway;
-    }
-
-    public void setRangeHighway(Integer rangeHighway) {
-        this.rangeHighway = rangeHighway;
-    }
-
-    public Double getEvCombinedMpg() {
-        return evCombinedMpg;
-    }
-
-    public void setEvCombinedMpg(Double evCombinedMpg) {
-        this.evCombinedMpg = evCombinedMpg;
-    }
-
-    public Double getEvCityMpg() {
-        return evCityMpg;
-    }
-
-    public void setEvCityMpg(Double evCityMpg) {
-        this.evCityMpg = evCityMpg;
-    }
-
-    public Double getEvHighwayMpg() {
-        return evHighwayMpg;
-    }
-
-    public void setEvHighwayMpg(Double evHighwayMpg) {
-        this.evHighwayMpg = evHighwayMpg;
-    }
-
-    public Integer getEvRange() {
-        return evRange;
-    }
-
-    public void setEvRange(Integer evRange) {
-        this.evRange = evRange;
-    }
-
-    public Double getEvKwhPer100Mi() {
-        return evKwhPer100Mi;
-    }
-
-    public void setEvKwhPer100Mi(Double evKwhPer100Mi) {
-        this.evKwhPer100Mi = evKwhPer100Mi;
-    }
-
-    public Double getEvChargeTimeHr240() {
-        return evChargeTimeHr240;
-    }
-
-    public void setEvChargeTimeHr240(Double evChargeTimeHr240) {
-        this.evChargeTimeHr240 = evChargeTimeHr240;
-    }
-
-    public Double getEvBatteryCapacity() {
-        return evBatteryCapacity;
-    }
-
-    public void setEvBatteryCapacity(Double evBatteryCapacity) {
-        this.evBatteryCapacity = evBatteryCapacity;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
-

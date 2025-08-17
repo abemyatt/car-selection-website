@@ -1,94 +1,43 @@
 package myatt.abe.backend.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "models")
 public class Model {
 
     @Id
+    @Column(name = "model_id")
     private Integer modelId;
 
-    @ManyToOne
-    @JoinColumn(name = "make_id")
-    private Make make;
-
+    @Column(name = "model_name", nullable = false)
     private String modelName;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "model")
-    private List<Submodel> submodels;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "make_id", nullable = false)
+    private Make make;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "model")
-    private List<ModelYear> modelYears;
+    @OneToMany(mappedBy = "model", fetch = FetchType.LAZY)
+    private List<Trim> trims;
 
-    public Integer getModelId() {
-        return modelId;
-    }
-
-    public void setModelId(Integer modelId) {
-        this.modelId = modelId;
-    }
-
-    public Make getMake() {
-        return make;
-    }
-
-    public void setMake(Make make) {
-        this.make = make;
-    }
-
-    public String getModelName() {
-        return modelName;
-    }
-
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public List<Submodel> getSubmodels() {
-        return submodels;
-    }
-
-    public void setSubmodels(List<Submodel> submodels) {
-        this.submodels = submodels;
-    }
-
-    public List<ModelYear> getModelYears() {
-        return modelYears;
-    }
-
-    public void setModelYears(List<ModelYear> modelYears) {
-        this.modelYears = modelYears;
-    }
-
-    // getters & setters
 }
