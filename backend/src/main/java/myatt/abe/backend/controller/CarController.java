@@ -1,5 +1,7 @@
 package myatt.abe.backend.controller;
 
+import myatt.abe.backend.model.dto.MakeDTO;
+import myatt.abe.backend.model.dto.ModelDTO;
 import myatt.abe.backend.model.dto.ResultsDTO;
 import myatt.abe.backend.service.CarService;
 import org.slf4j.Logger;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("${app.api.base-path:/api/cars}")
 public class CarController {
 
     private static final Logger logger = LoggerFactory.getLogger(CarController.class);
@@ -36,7 +38,7 @@ public class CarController {
      * @param transmission  The transmission of the car, e.g. Automatic, Manual
      * @return  A list of cars based on the filters, containing different trims, engine sizes, etc.
      */
-    @GetMapping("/cars")
+    @GetMapping()
     public ResponseEntity<List<ResultsDTO>> getCars(
             @RequestParam(value = "make", required = false) String make,
             @RequestParam(value = "model", required = false) String model,
@@ -50,6 +52,22 @@ public class CarController {
         var cars = carService.getCars(make, model, bodyType, doors, fuelType, transmission);
 
         return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/makes")
+    public ResponseEntity<List<MakeDTO>> getMakes() {
+        logger.info("Request received to retrieve all makes");
+        var makes = carService.getDistinctMakes();
+
+        return ResponseEntity.ok(makes);
+    }
+
+    @GetMapping("/models")
+    public ResponseEntity<List<ModelDTO>> getModelsByMake(@RequestParam Integer makeId) {
+        logger.info("Request received to retrieve all models by make id: {}", makeId);
+        var models = carService.getModelsByMake(makeId);
+
+        return ResponseEntity.ok(models);
     }
 
 }

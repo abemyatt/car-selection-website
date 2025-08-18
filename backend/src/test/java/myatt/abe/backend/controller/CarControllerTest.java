@@ -1,13 +1,14 @@
 package myatt.abe.backend.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import myatt.abe.backend.model.dto.MakeDTO;
+import myatt.abe.backend.model.dto.ModelDTO;
 import myatt.abe.backend.model.dto.ResultsDTO;
 import myatt.abe.backend.service.CarService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CarController.class)
+@TestPropertySource(properties = "app.api.base-path=/api/cars")
 class CarControllerTest {
 
     @Autowired
@@ -85,6 +87,55 @@ class CarControllerTest {
 
         mockMvc.perform(get("/api/cars")
                         .param("make", "Nonexistent")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+
+    @Test
+    void testGetMakesReturnsListOfMakes() throws Exception {
+        MakeDTO make1 = new MakeDTO(1, "Audi");
+        MakeDTO make2 = new MakeDTO(2, "BMW");
+        doReturn(List.of(make1, make2))
+                .when(carService)
+                .getDistinctMakes();
+
+        mockMvc.perform(get("/api/cars/makes")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].makeName").value("Audi"))
+                .andExpect(jsonPath("$[1].makeName").value("BMW"));
+    }
+
+    @Test
+    void testGetModelsByMakeReturnsModelsForGivenMake() throws Exception {
+        Integer makeId = 1;
+        ModelDTO model1 = new ModelDTO(1, "A4");
+        ModelDTO model2 = new ModelDTO(2, "A3");
+        doReturn(List.of(model1, model2))
+                .when(carService)
+                .getModelsByMake(eq(makeId));
+
+        mockMvc.perform(get("/api/cars/models")
+                        .param("makeId", String.valueOf(makeId))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].modelName").value("A4"))
+                .andExpect(jsonPath("$[1].modelName").value("A3"));
+    }
+
+    @Test
+    void testGetModelsByMakeEmptyResultReturnsEmptyList() throws Exception {
+        Integer makeId = 999;
+        doReturn(List.of())
+                .when(carService)
+                .getModelsByMake(eq(makeId));
+
+        mockMvc.perform(get("/api/cars/models")
+                        .param("makeId", String.valueOf(makeId))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
