@@ -22,7 +22,19 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_APP_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       BACKEND_PORT: ${BACKEND_PORT}
+      BASE_PATH: ${BASE_PATH}
+      FRONTEND_URL: ${FRONTEND_URL}
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     depends_on:
       - postgres
+  frontend:
+    build: ./frontend
+    container_name: car_frontend
+    environment:
+      VITE_BACKEND_BASE_URL: ${VITE_BACKEND_BASE_URL}
+      VITE_BACKEND_BASE_PATH: ${VITE_BACKEND_BASE_PATH}
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
