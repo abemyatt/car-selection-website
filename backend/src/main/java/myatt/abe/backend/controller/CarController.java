@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cars")
+@RequestMapping("${app.api.base-path}")
 public class CarController {
 
     private static final Logger logger = LoggerFactory.getLogger(CarController.class);
